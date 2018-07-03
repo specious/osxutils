@@ -83,7 +83,7 @@ int main (int argc, const char * argv[])
   int     optch;
   static char optstring[] = OPT_STRING;
   char        *destPath = argv[optind+1];
-  char        *filename = basename(strdup(argv[optind]));
+  char        *filename;
 
   while ((optch = getopt(argc, (char * const *)argv, optstring)) != -1)
   {
@@ -106,16 +106,6 @@ int main (int argc, const char * argv[])
     }
   }
 
-  //check if the destination is an existing folder, if so create alias inside of destination folder
-  char newDest[strlen(destPath) + strlen(filename) + 10];
-  if (UnixIsExistingFolder(/*destination*/(char *)destPath) == true)
-  {
-    strcpy(newDest, destPath);
-    strcat(newDest, "/");
-    strcat(newDest, (char *)filename);
-    destPath = newDest;
-  }
-    
   //check if a correct number of arguments was submitted
   if (argc - optind < 2)
   {
@@ -131,14 +121,26 @@ int main (int argc, const char * argv[])
     return EX_NOINPUT;
   }
 
-  //check if we can create alias in the specified location
-  if (access(argv[optind+1], F_OK) != -1)
+  // check if the destination is an existing folder, if so create alias inside of destination folder
+  filename = basename(strdup(argv[optind]));
+  char newDest[strlen(destPath) + strlen(filename) + 10];
+  if (UnixIsExistingFolder(/*destination*/(char *)destPath) == true)
   {
-    fprintf(stderr, "%s: File exists\n", argv[optind+1]);
+    strcpy(newDest, destPath);
+    strcat(newDest, "/");
+    strcat(newDest, (char *)filename);
+    destPath = newDest;
+    // printf("Destination is an existing folder, changing to new location: %s\n", (char *) destPath);
+  }
+
+  //check if we can create alias in the specified location
+  if (access(destPath, F_OK) != -1)
+  {
+    fprintf(stderr, "%s: File exists\n", destPath);
     return EX_CANTCREAT;
   }
 
-  CreateAlias(/*source*/(char *)argv[optind], /*destination*/(char *)argv[optind+1]);
+  CreateAlias(/*source*/(char *)argv[optind], /*destination*/(char *)destPath);
 
   return EX_OK;
 }
