@@ -22,7 +22,7 @@
   CHANGES
  
   0.6
-    * if/when destination is an already existing folder, new alias will be created inside of given folder by Derek(https://github.com/1and1get2 )
+    * if/when destination is an already existing folder, new alias will be created inside of given folder.
  
   0.5
     * Sysexits.h used for return values
