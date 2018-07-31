@@ -123,7 +123,7 @@ int main (int argc, const char * argv[])
 
   // check if the destination is an existing folder, if so create alias inside of destination folder
   filename = basename(strdup(argv[optind]));
-  char newDest[strlen(destPath) + strlen(filename) + 10];
+  char newDest[strlen(destPath) + strlen(filename)];
   if (UnixIsExistingFolder(/*destination*/(char *)destPath) == true)
   {
     strcpy(newDest, destPath);
