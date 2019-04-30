@@ -21,6 +21,9 @@
 /*
   CHANGES
 
+  0.6
+    * if/when destination is an already existing folder, new alias will be created inside of given folder.
+
   0.5
     * Sysexits.h used for return values
 
@@ -58,14 +61,16 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sysexits.h>
+#include <libgen.h>
 
 #define PROGRAM_STRING "mkalias"
-#define VERSION_STRING "0.5"
+#define VERSION_STRING "0.6"
 #define AUTHOR_STRING  "Sveinbjorn Thordarson"
 #define OPT_STRING     "chrtv"
 
 static void CreateAlias (char *srcPath, char *destPath);
 static short UnixIsFolder (char *path);
+static short UnixIsExistingFolder (char *path);
 static void PrintVersion (void);
 static void PrintHelp (void);
 
@@ -77,6 +82,8 @@ int main (int argc, const char * argv[])
 {
   int     optch;
   static char optstring[] = OPT_STRING;
+  char        *destPath = argv[optind+1];
+  char        *filename;
 
   while ((optch = getopt(argc, (char * const *)argv, optstring)) != -1)
   {
@@ -114,14 +121,25 @@ int main (int argc, const char * argv[])
     return EX_NOINPUT;
   }
 
-  //check if we can create alias in the specified location
-  if (access(argv[optind+1], F_OK) != -1)
+  // check if the destination is an existing folder, if so create alias inside of destination folder
+  filename = basename(strdup(argv[optind]));
+  char newDest[strlen(destPath) + strlen(filename)];
+  if (UnixIsExistingFolder(/*destination*/(char *)destPath) == true)
   {
-    fprintf(stderr, "%s: File exists\n", argv[optind+1]);
+    strcpy(newDest, destPath);
+    strcat(newDest, "/");
+    strcat(newDest, (char *)filename);
+    destPath = newDest;
+  }
+
+  //check if we can create alias in the specified location
+  if (access(destPath, F_OK) != -1)
+  {
+    fprintf(stderr, "%s: File exists\n", destPath);
     return EX_CANTCREAT;
   }
 
-  CreateAlias(/*source*/(char *)argv[optind], /*destination*/(char *)argv[optind+1]);
+  CreateAlias(/*source*/(char *)argv[optind], /*destination*/(char *)destPath);
 
   return EX_OK;
 }
@@ -401,6 +419,18 @@ static short UnixIsFolder (char *path)
     return err;
 
   return S_ISREG(filestat.st_mode) != 1;
+}
+
+static short UnixIsExistingFolder (char *path)
+{
+  struct stat filestat;
+  short err;
+
+  err = stat(path, &filestat);
+  if (err == -1)
+    return err;
+
+  return err == 0 && (S_IFDIR & filestat.st_mode);
 }
 
 static void PrintVersion (void)
