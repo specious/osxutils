@@ -20,10 +20,10 @@
 
 /*
   CHANGES
- 
+
   0.6
     * if/when destination is an already existing folder, new alias will be created inside of given folder.
- 
+
   0.5
     * Sysexits.h used for return values
 
@@ -130,7 +130,6 @@ int main (int argc, const char * argv[])
     strcat(newDest, "/");
     strcat(newDest, (char *)filename);
     destPath = newDest;
-    // printf("Destination is an existing folder, changing to new location: %s\n", (char *) destPath);
   }
 
   //check if we can create alias in the specified location
