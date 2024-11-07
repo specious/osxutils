@@ -144,7 +144,7 @@ static char* CutSuffix (char *name)
   {
     if (name[len-i] == '.')
     {
-      name[len-i] = NULL;
+      name[len-i] = '\0';
       return name;
     }
   }

@@ -596,7 +596,7 @@ static OSErr PrintFileType (FSRef *fileRef)
 	}
 
 	// retrieve filespec from file ref
-    err = FSGetCatalogInfo (fileRef, NULL, NULL, NULL, &fileSpec, NULL);
+    err = FSGetCatalogInfo (fileRef, 0, NULL, NULL, &fileSpec, NULL);
     if (err != noErr)
     {
         fprintf(stderr, "FSGetCatalogInfo(): Error %d getting file spec from file reference\n", err);
@@ -636,7 +636,7 @@ static OSErr PrintCreatorCode (FSRef *fileRef)
 	}
 
 	// retrieve filespec from file ref
-    err = FSGetCatalogInfo (fileRef, NULL, NULL, NULL, &fileSpec, NULL);
+    err = FSGetCatalogInfo (fileRef, 0, NULL, NULL, &fileSpec, NULL);
     if (err != noErr)
     {
         fprintf(stderr, "FSGetCatalogInfo(): Error %d getting file spec from file reference\n", err);
@@ -730,7 +730,7 @@ static OSErr PrintLabelName (FSRef *fileRef)
 	int			labelNum = 0;
 
 	/* retrieve filespec from file ref */
-    err = FSGetCatalogInfo (fileRef, NULL, NULL, NULL, &fileSpec, NULL);
+    err = FSGetCatalogInfo (fileRef, 0, NULL, NULL, &fileSpec, NULL);
     if (err != noErr)
     {
         fprintf(stderr, "FSGetCatalogInfo(): Error %d getting file spec from file reference\n", err);
@@ -772,7 +772,7 @@ static OSErr PrintLabelNumber (FSRef *fileRef)
 	int			labelNum = 0;
 
 	/* retrieve filespec from file ref */
-    err = FSGetCatalogInfo (fileRef, NULL, NULL, NULL, &fileSpec, NULL);
+    err = FSGetCatalogInfo (fileRef, 0, NULL, NULL, &fileSpec, NULL);
     if (err != noErr)
     {
         fprintf(stderr, "FSGetCatalogInfo(): Error %d getting file spec from file reference\n", err);
@@ -1033,7 +1033,7 @@ static OSErr PrintOSXComment (FSRef	*fileRef)
 	AEIdleUPP inIdleProc = NewAEIdleUPP(&MyAEIdleCallback);
 
             //retrieve filespec from file ref
-            err = FSGetCatalogInfo (fileRef, NULL, NULL, NULL, &fileSpec, NULL);
+            err = FSGetCatalogInfo (fileRef, 0, NULL, NULL, &fileSpec, NULL);
             if (err != noErr)
             {
 				fprintf(stderr, "FSGetCatalogInfo(): Error %d getting file spec for %s\n", err);
@@ -1073,7 +1073,7 @@ static OSErr PrintOS9Comment (FSRef *fileRef)
 	char	comment[255] = "\0";
 
 	//retrieve filespec from file ref
-	err = FSGetCatalogInfo (fileRef, NULL, NULL, NULL, &fileSpec, NULL);
+	err = FSGetCatalogInfo (fileRef, 0, NULL, NULL, &fileSpec, NULL);
 	if (err != noErr)
 	{
 		fprintf(stderr, "FSGetCatalogInfo(): Error %d getting file spec\n", err);

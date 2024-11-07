@@ -229,7 +229,7 @@ static void CreateAlias (char *srcPath, char *destPath)
   }
 
   //retrieve source filespec from source file ref
-  err = FSGetCatalogInfo (&srcRef, NULL, NULL, NULL, &sourceFSSpec, NULL);
+  err = FSGetCatalogInfo (&srcRef, 0, NULL, NULL, &sourceFSSpec, NULL);
   if (err != noErr)
   {
     fprintf(stderr, "FSGetCatalogInfo(): Error %d getting file spec from source FSRef\n", err);

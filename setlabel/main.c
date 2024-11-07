@@ -165,7 +165,7 @@ static void SetFileLabel (char *path, short labelNum)
   }
 
   //retrieve filespec from file ref
-  err = FSGetCatalogInfo (&fileRef, NULL, NULL, NULL, &fileSpec, NULL);
+  err = FSGetCatalogInfo (&fileRef, 0, NULL, NULL, &fileSpec, NULL);
   if (err != noErr)
   {
     fprintf(stderr, "FSGetCatalogInfo(): Error %d getting file spec for %s\n", err, path);
